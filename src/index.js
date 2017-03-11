@@ -1,55 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+//import App from './App';
 import './index.css';
 
+import store from './store';
+import UserContainer from './components/userContainer';
+import {Provider} from 'react-redux';
 // ReactDOM.render(
 //   <App />,
 //   document.getElementById('root')
 // );
 
- import {createStore} from 'redux';
- import {Provider} from 'react-redux';
-
- const reducer = (state,action) => {
-   switch (action.type){
-    case 'add':
-      state.counter = state.counter + action.payload
-   }
-   return state;
- };
-
- const store = createStore(reducer,{counter:0});
-
-const action =  {
-  type:"add",payload:1
-};
-
 store.subscribe(()=>{
-  console.log("data:"+ store.getState().counter);
+  console.log("state:");
+  console.log(store.getState());
 });
 
+store.dispatch(
+  {type:"ADD_USER",payload:{codigo:1,name:"Fredy Ramos", enabled:true}}
+);
 
-store.dispatch(action);
-store.dispatch(action);
-
-
-export default class NumberText extends React.Component {
-  
-  render(){
-    return (
-      <div>
-         <h1>{this.props.counter}</h1>
-         <button > Agregar </button> 
-      </div>
-    )
-  }
-}
-
-NumberText.defaultProps = {
-  counter:1
-};
+store.dispatch(
+  {type:"ADD_USER",payload:{codigo:2,name:"Erick Ramos", enabled:false}}
+);
 
 ReactDOM.render(
-<Provider store={store}><NumberText /></Provider>, document.getElementById("root") 
+<Provider store={store}><UserContainer /></Provider>, document.getElementById("root") 
 );
